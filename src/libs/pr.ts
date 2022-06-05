@@ -15,10 +15,12 @@ export async function handlePullRequestMessage(
     options: { editCommentOnPr },
   } = config;
 
-  const heading = `#### :tropical_drink: \`${command}\` on ${stackName}
+  const heading = dedent`
+    #### :tropical_drink: \`${command}\` on ${stackName}
 
-  <details>
-  <summary>Click to expand Pulumi report</summary>`;
+    <details>
+    <summary>Click to expand Pulumi report</summary>
+  `;
 
   const rawBody = output.substring(0, 64_000);
   // a line break between heading and rawBody is needed
