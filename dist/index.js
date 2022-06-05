@@ -87920,6 +87920,7 @@ function handlePullRequestMessage(config, output) {
         const { payload, repo } = github.context;
         invariant(payload.pull_request, 'Missing pull request event data.');
         const octokit = (0,github.getOctokit)(githubToken);
+        core.info("pr - config: " + JSON.stringify(config));
         try {
             if (editCommentOnPr) {
                 const { data: comments } = yield octokit.rest.issues.listComments(Object.assign(Object.assign({}, repo), { issue_number: payload.pull_request.number }));

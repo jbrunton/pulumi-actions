@@ -42,6 +42,8 @@ export async function handlePullRequestMessage(
 
   const octokit = getOctokit(githubToken);
 
+  core.info("pr - config: " + JSON.stringify(config));
+
   try {
     if (editCommentOnPr) {
       const { data: comments } = await octokit.rest.issues.listComments({
