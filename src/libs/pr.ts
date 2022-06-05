@@ -52,6 +52,9 @@ export async function handlePullRequestMessage(
         comment.body.startsWith(heading),
       );
 
+      core.info("heading: " + heading);
+      core.info("comments: " + JSON.stringify(comments, null, ' '));
+
       // If comment exists, update it.
       if (comment) {
         await octokit.rest.issues.updateComment({
