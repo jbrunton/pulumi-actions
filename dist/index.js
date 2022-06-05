@@ -87899,17 +87899,16 @@ var dedent = __nccwpck_require__(5281);
 function handlePullRequestMessage(config, output) {
     return modules_awaiter(this, void 0, void 0, function* () {
         const { githubToken, command, stackName, options: { editCommentOnPr }, } = config;
-        const heading = dedent `
-    #### :tropical_drink: \`${command}\` on ${stackName}
-
-    <details>
-    <summary>Click to expand Pulumi report</summary>
-  `;
+        const heading = `#### :tropical_drink: \`${command}\` on ${stackName}`;
+        const summary = '<summary>Click to expand Pulumi report</summary>';
         const rawBody = output.substring(0, 64000);
         // a line break between heading and rawBody is needed
         // otherwise the backticks won't work as intended
         const body = dedent `
     ${heading}
+
+    <details>
+    ${summary}
 
     \`\`\`
     ${rawBody}
@@ -87925,7 +87924,7 @@ function handlePullRequestMessage(config, output) {
         try {
             if (editCommentOnPr) {
                 const { data: comments } = yield octokit.rest.issues.listComments(Object.assign(Object.assign({}, repo), { issue_number: payload.pull_request.number }));
-                const comment = comments.find((comment) => comment.body.startsWith(heading));
+                const comment = comments.find((comment) => comment.body.startsWith(heading) && comment.body.includes(summary));
                 core.info(JSON.stringify({ heading }));
                 core.info(JSON.stringify({ "comments[0].body": comments[0].body }));
                 core.info("comments: " + JSON.stringify(comments, null, ' '));
