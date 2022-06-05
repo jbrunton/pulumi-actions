@@ -15,16 +15,17 @@ export async function handlePullRequestMessage(
     options: { editCommentOnPr },
   } = config;
 
-  const heading = `#### :tropical_drink: \`${command}\` on ${stackName}
-
-  <details>
-  <summary>Click to expand Pulumi report</summary>`;
+  const heading = `#### :tropical_drink: \`${command}\` on ${stackName}`;
+  const summary = '<summary>Click to expand Pulumi report</summary>';
 
   const rawBody = output.substring(0, 64_000);
   // a line break between heading and rawBody is needed
   // otherwise the backticks won't work as intended
   const body = dedent`
     ${heading}
+
+    <details>
+    ${summary}
 
     \`\`\`
     ${rawBody}
@@ -52,7 +53,7 @@ export async function handlePullRequestMessage(
       });
       core.info("comments: " + JSON.stringify(comments, null, ' '));
       const comment = comments.find((comment) =>
-        comment.body.startsWith(heading),
+        comment.body.startsWith(heading) && comment.body.includes(summary),
       );
 
       // If comment exists, update it.
@@ -63,7 +64,7 @@ export async function handlePullRequestMessage(
           body,
         });
         return;
-      }
+      } 
     }
   } catch {
     core.warning(
