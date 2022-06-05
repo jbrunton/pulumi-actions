@@ -53,6 +53,7 @@ export async function handlePullRequestMessage(
       );
 
       core.info("heading: " + heading);
+      core.info("comments[0].body: " + comments[0].body);
       core.info("comments: " + JSON.stringify(comments, null, ' '));
 
       // If comment exists, update it.

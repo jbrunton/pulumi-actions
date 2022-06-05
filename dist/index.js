@@ -87925,6 +87925,7 @@ function handlePullRequestMessage(config, output) {
                 const { data: comments } = yield octokit.rest.issues.listComments(Object.assign(Object.assign({}, repo), { issue_number: payload.pull_request.number }));
                 const comment = comments.find((comment) => comment.body.startsWith(heading));
                 core.info("heading: " + heading);
+                core.info("comments[0].body: " + comments[0].body);
                 core.info("comments: " + JSON.stringify(comments, null, ' '));
                 // If comment exists, update it.
                 if (comment) {
