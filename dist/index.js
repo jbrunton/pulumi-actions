@@ -82244,6 +82244,10 @@ const login = (cloudUrl, accessToken) => modules_awaiter(void 0, void 0, void 0,
 const main = () => modules_awaiter(void 0, void 0, void 0, function* () {
     const config = yield makeConfig();
     core.debug('Configuration is loaded');
+    if (!process.env.GITHUB_TOKEN && config.githubToken) {
+        // Avoid GitHub rate limits when downloading plugins
+        process.env.GITHUB_TOKEN = config.githubToken;
+    }
     yield downloadCli(config.options.pulumiVersion);
     yield login(config.cloudUrl, environmentVariables.PULUMI_ACCESS_TOKEN);
     const workDir = (0,external_path_.resolve)(environmentVariables.GITHUB_WORKSPACE, config.workDir);

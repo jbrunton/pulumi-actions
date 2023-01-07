@@ -18,6 +18,11 @@ const main = async () => {
   const config = await makeConfig();
   core.debug('Configuration is loaded');
 
+  if (!process.env.GITHUB_TOKEN && config.githubToken) {
+    // Avoid GitHub rate limits when downloading plugins
+    process.env.GITHUB_TOKEN = config.githubToken;
+  }
+
   await pulumiCli.downloadCli(config.options.pulumiVersion);
   await login(config.cloudUrl, environmentVariables.PULUMI_ACCESS_TOKEN);
 
